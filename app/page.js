@@ -171,6 +171,43 @@ export default function Home() {
   const [likedPosts, setLikedPosts] = useState(new Set());
   const [newPostText, setNewPostText] = useState('');
   const [logisticsTab, setLogisticsTab] = useState('aereo');
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [showInstall, setShowInstall] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+
+  useEffect(() => {
+    const dismissed = localStorage.getItem('pwa-install-dismissed');
+    if (dismissed) return;
+
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.navigator.standalone;
+    setIsIOS(ios);
+
+    if (ios) {
+      setTimeout(() => setShowInstall(true), 2500);
+      return;
+    }
+
+    const handler = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      setTimeout(() => setShowInstall(true), 2500);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      const { outcome } = await installPrompt.userChoice;
+      if (outcome === 'accepted') { setShowInstall(false); setInstallPrompt(null); }
+    }
+  };
+
+  const dismissInstall = () => {
+    setShowInstall(false);
+    localStorage.setItem('pwa-install-dismissed', '1');
+  };
 
   useEffect(() => {
     const tick = () => {
@@ -805,6 +842,37 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* PWA Install Banner */}
+      {showInstall && (
+        <div style={{ position: 'fixed', bottom: 80, left: 16, right: 16, zIndex: 300, background: C.blue, borderRadius: 16, padding: '18px 18px 16px', boxShadow: '0 8px 32px rgba(0,48,135,0.35)', animation: 'slideUp 0.35s ease' }}>
+          <style>{`@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }`}</style>
+          <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: C.yellow, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>📲</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, fontFamily: BODY, color: '#FFFFFF', marginBottom: 3 }}>
+                Instalar o App
+              </div>
+              {isIOS ? (
+                <div style={{ fontSize: 12, fontFamily: BODY, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
+                  Toque em <strong style={{ color: C.yellow }}>Compartilhar</strong> <span style={{ fontSize: 14 }}>⎦</span> e depois em <strong style={{ color: C.yellow }}>"Adicionar à Tela de Início"</strong>
+                </div>
+              ) : (
+                <div style={{ fontSize: 12, fontFamily: BODY, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
+                  Adicione à tela inicial para acesso rápido durante o evento.
+                </div>
+              )}
+            </div>
+            <button onClick={dismissInstall} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 8, width: 28, height: 28, cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>×</button>
+          </div>
+          {!isIOS && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+              <button onClick={dismissInstall} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '9px', fontSize: 13, fontFamily: BODY, fontWeight: 600, color: 'rgba(255,255,255,0.75)', cursor: 'pointer' }}>Agora não</button>
+              <button onClick={handleInstall} style={{ flex: 2, background: C.yellow, border: 'none', borderRadius: 8, padding: '9px', fontSize: 13, fontFamily: BODY, fontWeight: 700, color: C.blue, cursor: 'pointer' }}>Instalar App ↗</button>
+            </div>
+          )}
         </div>
       )}
 
