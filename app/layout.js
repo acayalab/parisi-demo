@@ -1,11 +1,17 @@
 export const metadata = {
-  title: 'Convenção de Vendas 2026 — Demo',
-  description: 'Hotsite + PWA — Grupo Casas Bahia',
+  title: 'Convenção de Vendas 2026 — Grupo Casas Bahia',
+  description: 'Hotsite + PWA — Convenção de Vendas 2026 — Tauá Hotel & Convention Atibaia',
 };
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <body style={{ margin: 0, padding: 0, backgroundColor: '#060E1F' }}>{children}</body>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="theme-color" content="#060E1F" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </head>
+      <body style={{ margin: 0, padding: 0, backgroundColor: '#060E1F', overflowX: 'hidden' }}>{children}</body>
     </html>
   );
 }
