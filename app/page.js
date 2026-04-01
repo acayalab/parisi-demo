@@ -845,35 +845,91 @@ export default function Home() {
         </div>
       )}
 
-      {/* PWA Install Banner */}
+      {/* PWA Install Modal */}
       {showInstall && (
-        <div style={{ position: 'fixed', bottom: 80, left: 16, right: 16, zIndex: 300, background: C.blue, borderRadius: 16, padding: '18px 18px 16px', boxShadow: '0 8px 32px rgba(0,48,135,0.35)', animation: 'slideUp 0.35s ease' }}>
-          <style>{`@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }`}</style>
-          <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: C.yellow, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>📲</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, fontFamily: BODY, color: '#FFFFFF', marginBottom: 3 }}>
-                Instalar o App
+        <>
+          <style>{`
+            @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+            @keyframes sheetUp { from { transform: translateY(100%) } to { transform: translateY(0) } }
+          `}</style>
+          <div onClick={dismissInstall} style={{ position: 'fixed', inset: 0, zIndex: 290, background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(3px)', animation: 'fadeIn 0.25s ease' }} />
+          <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 300, background: '#FFFFFF', borderRadius: '24px 24px 0 0', padding: '0 0 env(safe-area-inset-bottom, 24px)', boxShadow: '0 -8px 40px rgba(0,0,0,0.18)', animation: 'sheetUp 0.35s cubic-bezier(0.32,0.72,0,1)', maxWidth: 520, margin: '0 auto' }}>
+
+            {/* Handle */}
+            <div style={{ width: 40, height: 4, borderRadius: 2, background: '#E2E6EF', margin: '12px auto 0' }} />
+
+            {/* Header azul */}
+            <div style={{ background: `linear-gradient(135deg, ${C.blue} 0%, #0044B0 100%)`, margin: '16px 16px 0', borderRadius: 16, padding: '20px', display: 'flex', gap: 16, alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: -20, right: -20, width: 100, height: 100, borderRadius: '50%', background: 'rgba(255,208,0,0.15)' }} />
+              {/* Ícone simulado */}
+              <div style={{ width: 60, height: 60, borderRadius: 14, background: C.blue, border: '3px solid rgba(255,255,255,0.25)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
+                <div style={{ fontFamily: MONO, fontSize: 18, fontWeight: 900, color: C.yellow, lineHeight: 1 }}>CB</div>
+                <div style={{ fontFamily: MONO, fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>2026</div>
               </div>
-              {isIOS ? (
-                <div style={{ fontSize: 12, fontFamily: BODY, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
-                  Toque em <strong style={{ color: C.yellow }}>Compartilhar</strong> <span style={{ fontSize: 14 }}>⎦</span> e depois em <strong style={{ color: C.yellow }}>"Adicionar à Tela de Início"</strong>
+              <div>
+                <div style={{ fontSize: 17, fontWeight: 800, fontFamily: BODY, color: '#FFFFFF', letterSpacing: '-0.02em' }}>Instalar o App</div>
+                <div style={{ fontSize: 13, fontFamily: BODY, color: 'rgba(255,255,255,0.75)', marginTop: 3 }}>Convenção CB 2026</div>
+                <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+                  {['Gratuito', 'Offline', 'Rápido'].map((tag) => (
+                    <span key={tag} style={{ background: 'rgba(255,255,255,0.15)', borderRadius: 100, padding: '2px 9px', fontSize: 10, fontFamily: BODY, fontWeight: 700, color: 'rgba(255,255,255,0.9)' }}>{tag}</span>
+                  ))}
                 </div>
-              ) : (
-                <div style={{ fontSize: 12, fontFamily: BODY, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
-                  Adicione à tela inicial para acesso rápido durante o evento.
-                </div>
+              </div>
+            </div>
+
+            {/* Benefícios */}
+            <div style={{ padding: '20px 16px 16px' }}>
+              <div style={{ fontSize: 12, fontFamily: MONO, fontWeight: 500, color: C.textMuted, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>Por que instalar?</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {[
+                  { icon: '⚡', title: 'Acesso instantâneo', sub: 'Abra direto da tela inicial sem precisar de navegador' },
+                  { icon: '📶', title: 'Funciona offline', sub: 'Agenda e informações disponíveis mesmo sem internet' },
+                  { icon: '🔔', title: 'Notificações do evento', sub: 'Receba avisos importantes da organização em tempo real' },
+                ].map((b, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                    <div style={{ width: 38, height: 38, borderRadius: 10, background: C.blueDim, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>{b.icon}</div>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 700, fontFamily: BODY, color: C.text }}>{b.title}</div>
+                      <div style={{ fontSize: 12, fontFamily: BODY, color: C.textMuted, marginTop: 1, lineHeight: 1.4 }}>{b.sub}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Passos iOS */}
+            {isIOS && (
+              <div style={{ margin: '0 16px 16px', background: '#FFF8E1', border: '1px solid rgba(255,208,0,0.4)', borderRadius: 12, padding: '14px' }}>
+                <div style={{ fontSize: 12, fontFamily: BODY, fontWeight: 700, color: '#7A5C00', marginBottom: 10 }}>Como instalar no iPhone / iPad:</div>
+                {[
+                  { step: '1', text: 'Toque no ícone de Compartilhar', icon: '⎦' },
+                  { step: '2', text: 'Role para baixo e toque em', icon: '📲', bold: '"Adicionar à Tela de Início"' },
+                  { step: '3', text: 'Confirme tocando em "Adicionar"', icon: '✓' },
+                ].map((s, i) => (
+                  <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: i < 2 ? 8 : 0 }}>
+                    <div style={{ width: 22, height: 22, borderRadius: '50%', background: C.yellow, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800, fontFamily: MONO, color: C.blue, flexShrink: 0 }}>{s.step}</div>
+                    <div style={{ fontSize: 12, fontFamily: BODY, color: '#5C4A00' }}>
+                      {s.text} <span style={{ fontSize: 14 }}>{s.icon}</span>
+                      {s.bold && <strong style={{ color: '#3D3000' }}> {s.bold}</strong>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Botões */}
+            <div style={{ padding: '0 16px 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {!isIOS && (
+                <button onClick={handleInstall} style={{ ...btnYellow, width: '100%', padding: '15px', fontSize: 15, borderRadius: 12, boxShadow: `0 4px 16px ${C.yellowDim}` }}>
+                  📲 Instalar Agora — É Grátis
+                </button>
               )}
+              <button onClick={dismissInstall} style={{ background: 'transparent', border: 'none', padding: '10px', fontSize: 13, fontFamily: BODY, fontWeight: 600, color: C.textMuted, cursor: 'pointer' }}>
+                Agora não
+              </button>
             </div>
-            <button onClick={dismissInstall} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 8, width: 28, height: 28, cursor: 'pointer', color: 'rgba(255,255,255,0.7)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>×</button>
           </div>
-          {!isIOS && (
-            <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
-              <button onClick={dismissInstall} style={{ flex: 1, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, padding: '9px', fontSize: 13, fontFamily: BODY, fontWeight: 600, color: 'rgba(255,255,255,0.75)', cursor: 'pointer' }}>Agora não</button>
-              <button onClick={handleInstall} style={{ flex: 2, background: C.yellow, border: 'none', borderRadius: 8, padding: '9px', fontSize: 13, fontFamily: BODY, fontWeight: 700, color: C.blue, cursor: 'pointer' }}>Instalar App ↗</button>
-            </div>
-          )}
-        </div>
+        </>
       )}
 
       {/* Bottom tab bar */}
