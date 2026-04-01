@@ -88,7 +88,7 @@ const FAQ_ITEMS = [
   { q: 'Qual o horário de check-in no hotel?', a: 'Check-in a partir das 14h no dia 27/09. Check-out até 12h do dia 29/09.' },
   { q: 'As refeições estão incluídas?', a: 'Sim! Café da manhã, almoço, coffee breaks e jantar inclusos para todos os participantes.' },
   { q: 'O que devo levar?', a: 'Documento com foto, confirmação de inscrição, roupas adequadas e itens pessoais.' },
-  { q: 'Contato para emergências?', a: 'Central do Evento: (11) 99999-0000 (WhatsApp). Disponível 24h durante o evento.' },
+  { q: 'Contato para emergências?', a: 'Central do Evento disponível via WhatsApp 24h durante o evento. Número será divulgado no kit de boas-vindas.' },
   { q: 'Como usar o app durante o evento?', a: 'Navegue pelo menu inferior. Use o QR Code nos estandes e acompanhe agenda e feed.' },
 ];
 
@@ -332,7 +332,7 @@ export default function Home() {
 
       <div style={{ margin: '20px 16px 0', padding: '14px 0', borderTop: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between' }}>
         <span style={{ fontSize: 11, fontFamily: MONO, color: C.textMuted }}>Casas Bahia © 2026</span>
-        <span style={{ fontSize: 11, fontFamily: MONO, color: C.textMuted }}>Demo v4.0</span>
+        <span style={{ fontSize: 11, fontFamily: MONO, color: C.textMuted }}>Tauá · Atibaia, SP</span>
       </div>
     </div>
   );
@@ -816,7 +816,7 @@ export default function Home() {
           </div>
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Chip variant="blue">Demo</Chip>
+          <span style={{ fontSize: 10, fontFamily: MONO, color: C.textMuted, letterSpacing: '0.1em' }}>28–29 SET</span>
         </div>
       </nav>
 
